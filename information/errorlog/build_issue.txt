@@ -1,0 +1,168 @@
+aditya@aditya:~/uxrt-toplevel$ make all RUST_BACKTRACE=1
+mkdir -p build/iso build/bootimg build/tools
+export PATH="$PWD/build/tools:$PATH"; \
+export INSTALL_ROOT=$PWD/build/iso; \
+export TOOLS_INSTALL_ROOT=$PWD/build/tools; \
+for dir in test-iso-toplevel boot; do \
+	(cd packages/$dir && make && make install-local) \
+done
+make[1]: Entering directory '/home/aditya/uxrt-toplevel/packages/test-iso-toplevel'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/aditya/uxrt-toplevel/packages/test-iso-toplevel'
+make[1]: Entering directory '/home/aditya/uxrt-toplevel/packages/test-iso-toplevel'
+(cd skel && find . | cpio -pdumv /home/aditya/uxrt-toplevel/build/iso)
+/home/aditya/uxrt-toplevel/build/iso/./isolinux
+/home/aditya/uxrt-toplevel/build/iso/./isolinux/mboot.c32
+/home/aditya/uxrt-toplevel/build/iso/./isolinux/isolinux.cfg
+/home/aditya/uxrt-toplevel/build/iso/./isolinux/isolinux.bin
+118 blocks
+make[1]: Leaving directory '/home/aditya/uxrt-toplevel/packages/test-iso-toplevel'
+make[1]: Entering directory '/home/aditya/uxrt-toplevel/packages/boot'
+(cd coreboot/payloads/libpayload && make)
+make[2]: Entering directory '/home/aditya/uxrt-toplevel/packages/boot/coreboot/payloads/libpayload'
+make[2]: Leaving directory '/home/aditya/uxrt-toplevel/packages/boot/coreboot/payloads/libpayload'
+(cd mb2_loader && make)
+make[2]: Entering directory '/home/aditya/uxrt-toplevel/packages/boot/mb2_loader'
+mkdir -p obj/pc-x86_32 obj/pc-x86_32/cpu obj/pc-x86_32/multiboot obj/pc-x86_32/platform obj/pc-x86_32/platform/tests obj/pc-x86_32/x86_common
+make[2]: Leaving directory '/home/aditya/uxrt-toplevel/packages/boot/mb2_loader'
+make[1]: Leaving directory '/home/aditya/uxrt-toplevel/packages/boot'
+make[1]: Entering directory '/home/aditya/uxrt-toplevel/packages/boot'
+install -m 644 mb2_loader/obj/pc-x86_32/platform/mb2_img_loader /home/aditya/uxrt-toplevel/build/iso/mb2_img_loader
+make[1]: Leaving directory '/home/aditya/uxrt-toplevel/packages/boot'
+export PATH="$PWD/build/tools:$PATH"; \
+export INSTALL_ROOT=$PWD/build/bootimg; \
+export TOOLS_INSTALL_ROOT=$PWD/build/tools; \
+for dir in xrfs/genxrfs core-supervisor/fel4/cargo-fel4 core-supervisor; do \
+	(cd packages/$dir && make && make install-local) \
+done
+make[1]: Entering directory '/home/aditya/uxrt-toplevel/packages/xrfs/genxrfs'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/aditya/uxrt-toplevel/packages/xrfs/genxrfs'
+make[1]: Entering directory '/home/aditya/uxrt-toplevel/packages/xrfs/genxrfs'
+install -m 755 genxrfs /home/aditya/uxrt-toplevel/build/tools/
+make[1]: Leaving directory '/home/aditya/uxrt-toplevel/packages/xrfs/genxrfs'
+make[1]: Entering directory '/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/cargo-fel4'
+cargo build --release
+    Finished release [optimized] target(s) in 0.15s
+make[1]: Leaving directory '/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/cargo-fel4'
+make[1]: Entering directory '/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/cargo-fel4'
+install -m 755 target/release/cargo-fel4 /home/aditya/uxrt-toplevel/build/tools
+make[1]: Leaving directory '/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/cargo-fel4'
+make[1]: Entering directory '/home/aditya/uxrt-toplevel/packages/core-supervisor'
+cd process-server && make
+make[2]: Entering directory '/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server'
+rm -rf artifacts
+cargo fel4 build
+   Compiling libsel4-sys v0.5.0 (/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys)
+error: failed to run custom build command for `libsel4-sys v0.5.0 (/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys)`
+process didn't exit successfully: `/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/target/debug/build/libsel4-sys-b98da034a0b4a0e0/build-script-build` (exit code: 101)
+--- stdout
+cargo:rerun-if-changed=/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/fel4.toml
+cargo:rerun-if-changed=/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/fel4.toml
+running: "cmake" "/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/." "-G" "Ninja" "-DCMAKE_TOOLCHAIN_FILE=/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/gcc.cmake" "-DKERNEL_PATH=/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel" "-DKernelUserStackTraceLength=16" "-DKernelSupportPCID:BOOL=OFF" "-DKernelStackBits=12" "-DKernelSkimWindow:BOOL=ON" "-DBuildWithCommonSimulationSettings:BOOL=ON" "-DKernelMultiboot1Header:BOOL=ON" "-DKernelFPUMaxRestoresSinceSwitch=64" "-DKernelX86Sel4Arch=x86_64" "-DKernelFastpath:BOOL=ON" "-DKernelFSGSBase=msr" "-DKernelIRQController=IOAPIC" "-DKernelRetypeFanOutLimit=256" "-DKernelMaxNumIOAPIC=1" "-DKernelExportPMCUser:BOOL=OFF" "-DKernelMultiboot2Header:BOOL=ON" "-DHardwareDebugAPI:BOOL=ON" "-DKernelMaxNumNodes=1" "-DKernelSyscall=syscall" "-DKernelLAPICMode=XAPIC" "-DKernelX86IBPBOnContextSwitch:BOOL=OFF" "-DKernelXSaveSize=576" "-DKernelFPU=FXSAVE" "-DKernelMaxNumWorkUnitsPerPreemption=100" "-DKernelResetChunkBits=8" "-DKernelMultibootGFXMode=none" "-DLinkPageSize=4096" "-DUserLinkerGCSections:BOOL=OFF" "-DKernelFWholeProgram:BOOL=OFF" "-DKernelDebugBuild:BOOL=ON" "-DKernelPrinting:BOOL=ON" "-DKernelX86MicroArch=nehalem" "-DKernelDebugDisablePrefetchers:BOOL=OFF" "-DKernelIOMMU:BOOL=OFF" "-DKernelIRQReporting:BOOL=ON" "-DKernelNumPriorities=256" "-DKernelRootCNodeSizeBits=19" "-DKernelVerificationBuild:BOOL=OFF" "-DKernelX86DangerousMSR:BOOL=OFF" "-DLibSel4DebugAllocBufferEntries=0" "-DKernelTimeSlice=5" "-DLibSel4DebugFunctionInstrumentation=none" "-DLibSel4FunctionAttributes=public" "-DLibPlatSupportX86ConsoleDevice=com1" "-DKernelOptimisation=-O2" "-DKernelArch=x86" "-DKernelVTX:BOOL=OFF" "-DKernelBenchmarks=none" "-DKernelMaxNumBootinfoUntypedCaps=230" "-DKernelCacheLnSz=64" "-DKernelX86IBRSMode=ibrs_none" "-DKernelX86RSBOnContextSwitch:BOOL=OFF" "-DKernelColourPrinting:BOOL=ON" "-DKernelHugePage:BOOL=ON" "-DRawMain:BOOL=ON" "-DKernelNumDomains=1" "-DCMAKE_C_FLAGS=" "-DCMAKE_CXX_FLAGS=" "-DCMAKE_INSTALL_PREFIX=/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/target/x86_64-sel4-fel4/debug/build/libsel4-sys-b8ba792de44611a3/out" "-DCMAKE_BUILD_TYPE=Debug"
+-- The C compiler identification is GNU 4.8.5
+-- The CXX compiler identification is GNU 7.4.0
+-- Check for working C compiler: /usr/bin/gcc
+-- Check for working C compiler: /usr/bin/gcc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/g++
+-- Check for working CXX compiler: /usr/bin/g++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- The ASM compiler identification is GNU
+-- Found assembler: /usr/bin/gcc
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/target/x86_64-sel4-fel4/debug/build/libsel4-sys-b8ba792de44611a3/out/build
+running: "cmake" "--build" "." "--target" "install" "--config" "Debug" "--" "-j4"
+[1/43] Building C object libsel4/CMakeFiles/libsel4_shared_types_gen_pbf_temp_lib.dir/libsel4_shared_types_gen_pbf_temp.c.obj
+FAILED: libsel4/CMakeFiles/libsel4_shared_types_gen_pbf_temp_lib.dir/libsel4_shared_types_gen_pbf_temp.c.obj 
+ccache /usr/bin/gcc --sysroot=/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/target/x86_64-sel4-fel4/debug/build/libsel4-sys-b8ba792de44611a3/out/build  -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/include -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/arch_include/x86 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/sel4_arch_include/x86_64 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/sel4_plat_include/pc99 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/mode_include/64 -Ilibsel4/autoconf -Ikernel/gen_config -Ilibsel4/gen_config -m64  -march=nehalem -D__KERNEL_64__ -g   -nostdinc -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ftls-model=local-exec -mtls-direct-seg-refs -E -P -std=gnu11 -MD -MT libsel4/CMakeFiles/libsel4_shared_types_gen_pbf_temp_lib.dir/libsel4_shared_types_gen_pbf_temp.c.obj -MF libsel4/CMakeFiles/libsel4_shared_types_gen_pbf_temp_lib.dir/libsel4_shared_types_gen_pbf_temp.c.obj.d -o libsel4/CMakeFiles/libsel4_shared_types_gen_pbf_temp_lib.dir/libsel4_shared_types_gen_pbf_temp.c.obj   -c libsel4/libsel4_shared_types_gen_pbf_temp.c
+cc1: error: bad value (nehalem) for -march= switch
+[2/43] Building C object libsel4/CMakeFiles/libsel4_sel4_arch_types_gen_pbf_temp_lib.dir/libsel4_sel4_arch_types_gen_pbf_temp.c.obj
+FAILED: libsel4/CMakeFiles/libsel4_sel4_arch_types_gen_pbf_temp_lib.dir/libsel4_sel4_arch_types_gen_pbf_temp.c.obj 
+ccache /usr/bin/gcc --sysroot=/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/target/x86_64-sel4-fel4/debug/build/libsel4-sys-b8ba792de44611a3/out/build  -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/include -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/arch_include/x86 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/sel4_arch_include/x86_64 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/sel4_plat_include/pc99 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/libsel4/mode_include/64 -Ilibsel4/autoconf -Ikernel/gen_config -Ilibsel4/gen_config -m64  -march=nehalem -D__KERNEL_64__ -g   -nostdinc -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ftls-model=local-exec -mtls-direct-seg-refs -E -P -std=gnu11 -MD -MT libsel4/CMakeFiles/libsel4_sel4_arch_types_gen_pbf_temp_lib.dir/libsel4_sel4_arch_types_gen_pbf_temp.c.obj -MF libsel4/CMakeFiles/libsel4_sel4_arch_types_gen_pbf_temp_lib.dir/libsel4_sel4_arch_types_gen_pbf_temp.c.obj.d -o libsel4/CMakeFiles/libsel4_sel4_arch_types_gen_pbf_temp_lib.dir/libsel4_sel4_arch_types_gen_pbf_temp.c.obj   -c libsel4/libsel4_sel4_arch_types_gen_pbf_temp.c
+cc1: error: bad value (nehalem) for -march= switch
+[3/43] Building C object kernel/CMakeFiles/kernel_all_pp_prune_wrapper_temp_lib.dir/kernel_all_pp_prune_wrapper_temp.c.obj
+FAILED: kernel/CMakeFiles/kernel_all_pp_prune_wrapper_temp_lib.dir/kernel_all_pp_prune_wrapper_temp.c.obj 
+ccache /usr/bin/gcc --sysroot=/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/target/x86_64-sel4-fel4/debug/build/libsel4-sys-b8ba792de44611a3/out/build  -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/64 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/arch/x86 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/arch/x86/arch/64 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/plat/pc99 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/plat/pc99/plat/64 -Ikernel/gen_config -Ikernel/autoconf -Ikernel/gen_headers -m64  -march=nehalem -D__KERNEL_64__ -O2 -g -DNDEBUG   -nostdinc -nostdlib -O2 -DHAVE_AUTOCONF -DDEBUG -g -ggdb -mcmodel=kernel -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -std=c99 -Wall -Werror -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wundef -Wpointer-arith -Wno-nonnull -ffreestanding -mno-mmx -mno-sse -mno-sse2 -mno-3dnow -E -CC -I/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/target/x86_64-sel4-fel4/debug/build/libsel4-sys-b8ba792de44611a3/out/build/kernel/generated_prune -MD -MT kernel/CMakeFiles/kernel_all_pp_prune_wrapper_temp_lib.dir/kernel_all_pp_prune_wrapper_temp.c.obj -MF kernel/CMakeFiles/kernel_all_pp_prune_wrapper_temp_lib.dir/kernel_all_pp_prune_wrapper_temp.c.obj.d -o kernel/CMakeFiles/kernel_all_pp_prune_wrapper_temp_lib.dir/kernel_all_pp_prune_wrapper_temp.c.obj   -c kernel/kernel_all_pp_prune_wrapper_temp.c
+kernel/kernel_all_pp_prune_wrapper_temp.c:1:0: error: bad value (nehalem) for -march= switch
+ #line 1 "/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/src/api/faults.c"
+ ^
+[4/43] Building C object kernel/CMakeFiles/kernel_bf_gen_target_1_pbf_temp_lib.dir/kernel_bf_gen_target_1_pbf_temp.c.obj
+FAILED: kernel/CMakeFiles/kernel_bf_gen_target_1_pbf_temp_lib.dir/kernel_bf_gen_target_1_pbf_temp.c.obj 
+ccache /usr/bin/gcc --sysroot=/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server/target/x86_64-sel4-fel4/debug/build/libsel4-sys-b8ba792de44611a3/out/build  -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/64 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/arch/x86 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/arch/x86/arch/64 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/plat/pc99 -I/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/libsel4-sys/deps/seL4_kernel/include/plat/pc99/plat/64 -Ikernel/gen_config -Ikernel/autoconf -Ikernel/gen_headers -m64  -march=nehalem -D__KERNEL_64__ -O2 -g -DNDEBUG   -nostdinc -nostdlib -O2 -DHAVE_AUTOCONF -DDEBUG -g -ggdb -mcmodel=kernel -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -std=c99 -Wall -Werror -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wundef -Wpointer-arith -Wno-nonnull -ffreestanding -mno-mmx -mno-sse -mno-sse2 -mno-3dnow -E -P -MD -MT kernel/CMakeFiles/kernel_bf_gen_target_1_pbf_temp_lib.dir/kernel_bf_gen_target_1_pbf_temp.c.obj -MF kernel/CMakeFiles/kernel_bf_gen_target_1_pbf_temp_lib.dir/kernel_bf_gen_target_1_pbf_temp.c.obj.d -o kernel/CMakeFiles/kernel_bf_gen_target_1_pbf_temp_lib.dir/kernel_bf_gen_target_1_pbf_temp.c.obj   -c kernel/kernel_bf_gen_target_1_pbf_temp.c
+cc1: error: bad value (nehalem) for -march= switch
+ninja: build stopped: subcommand failed.
+
+--- stderr
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    RawMain
+
+
+thread 'main' panicked at '
+command did not execute successfully, got: exit code: 1
+
+build script failed, must exit now', /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/cmake-0.1.39/src/lib.rs:829:5
+stack backtrace:
+   0: std::sys::unix::backtrace::tracing::imp::unwind_backtrace
+             at src/libstd/sys/unix/backtrace/tracing/gcc_s.rs:39
+   1: std::sys_common::backtrace::_print
+             at src/libstd/sys_common/backtrace.rs:71
+   2: std::panicking::default_hook::{{closure}}
+             at src/libstd/sys_common/backtrace.rs:59
+             at src/libstd/panicking.rs:197
+   3: std::panicking::default_hook
+             at src/libstd/panicking.rs:211
+   4: std::panicking::rust_panic_with_hook
+             at src/libstd/panicking.rs:474
+   5: std::panicking::continue_panic_fmt
+             at src/libstd/panicking.rs:381
+   6: std::panicking::begin_panic_fmt
+             at src/libstd/panicking.rs:336
+   7: cmake::fail
+             at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/cmake-0.1.39/src/lib.rs:829
+   8: cmake::run
+             at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/cmake-0.1.39/src/lib.rs:807
+   9: cmake::Config::build
+             at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/cmake-0.1.39/src/lib.rs:716
+  10: build_script_build::main
+             at ./build.rs:68
+  11: std::rt::lang_start::{{closure}}
+             at /rustc/3f5152e200c0c02dfe0f79367948c98053d35855/src/libstd/rt.rs:64
+  12: std::panicking::try::do_call
+             at src/libstd/rt.rs:49
+             at src/libstd/panicking.rs:293
+  13: __rust_maybe_catch_panic
+             at src/libpanic_unwind/lib.rs:85
+  14: std::rt::lang_start_internal
+             at src/libstd/panicking.rs:272
+             at src/libstd/panic.rs:388
+             at src/libstd/rt.rs:48
+  15: std::rt::lang_start
+             at /rustc/3f5152e200c0c02dfe0f79367948c98053d35855/src/libstd/rt.rs:64
+  16: main
+  17: __libc_start_main
+  18: _start
+
+error: Failed to run the build command
+[command error] command status returned: exit code: 101
+ln -f artifacts/debug/feL4img artifacts/debug/proc
+ln: failed to access 'artifacts/debug/feL4img': No such file or directory
+Makefile:3: recipe for target 'all' failed
+make[2]: *** [all] Error 1
+make[2]: Leaving directory '/home/aditya/uxrt-toplevel/packages/core-supervisor/process-server'
+Makefile:4: recipe for target 'all' failed
+make[1]: *** [all] Error 2
+make[1]: Leaving directory '/home/aditya/uxrt-toplevel/packages/core-supervisor'
+Makefile:28: recipe for target 'install_bootimg_packages' failed
+make: *** [install_bootimg_packages] Error 2
+aditya@aditya:~/uxrt-toplevel$ 
+
