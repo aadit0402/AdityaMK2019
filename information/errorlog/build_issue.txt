@@ -166,3 +166,8 @@ Makefile:28: recipe for target 'install_bootimg_packages' failed
 make: *** [install_bootimg_packages] Error 2
 aditya@aditya:~/uxrt-toplevel$ 
 
+
+Solution: I have solved this problem by updating gcc from 4.8 to 7.4:
+
+sudo apt-get install --reinstall gcc
+
