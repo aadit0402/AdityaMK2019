@@ -1,0 +1,168 @@
+&x = 0x644fe8 and x = 0x64a071
+ p &self
+$4 = (core::cell::Cell<usize> **) 0x644ed0
+p *self
+$3 = core::cell::Cell<usize> {
+  value: core::cell::UnsafeCell<usize> {
+    value: 6594608
+  }
+ p &self
+$5 = (core::cell::UnsafeCell<usize> **) 0x644eb0
+ p self 
+$6 = (core::cell::UnsafeCell<usize> *) 0x64a081 <uxrt_process_server::alloc::SCRATCH_HEAP+16504>
+[0] from 0x0000000000414189 in intrusive_collections::rbtree::NodePtr::is_left_child+9 at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:198
+arg self = intrusive_collections::rbtree::NodePtr (
+  0x64a030 <uxrt_process_server::alloc::SCRATCH_HEAP+16423>
+ p self
+$7 = intrusive_collections::rbtree::NodePtr (
+  0x64a030 <uxrt_process_server::alloc::SCRATCH_HEAP+16423>
+
+>>> bt
+#0  intrusive_collections::rbtree::NodePtr::left (self=...) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:178
+#1  0x00000000004141a2 in intrusive_collections::rbtree::NodePtr::is_left_child (self=...) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:198
+#2  0x00000000004148eb in intrusive_collections::rbtree::NodePtr::post_insert (self=..., root=0x645978) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:339
+#3  0x0000000000411544 in intrusive_collections::rbtree::NodePtr::insert_right (self=..., new=..., root=0x645978) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:296
+#4  0x0000000000412c0c in intrusive_collections::rbtree::RBTree<A>::insert (self=0x645978, val=...) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:1253
+#5  0x000000000040c738 in <sel4_alloc::vspace::hier::Hier as sel4_alloc::VSpaceManager>::reserve_at_vaddr (self=0x645960, vaddr=4194304, bytes=19226624) at /home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/sel4-alloc/src/vspace/hier.rs:1069
+#6  0x0000000000406928 in sel4_alloc::bootstrap::bootstrap_allocators (bi=0x1657000, user_start_vaddr=4194304, user_end_vaddr=23417392) at /home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/sel4-alloc/src/bootstrap.rs:146
+#7  0x00000000004045b7 in uxrt_process_server::alloc::MainAlloc::new (bootinfo=0x1657000, user_start_addr=4194304, user_end_addr=23417392) at src/alloc.rs:160
+#8  0x00000000004031eb in uxrt_process_server::main (bootinfo=0x1657000) at src/lib.rs:215
+#9  0x0000000000400535 in root_task::main () at src/bin/root-task.rs:216
+>>> 
+
+>>> info frame 0
+Stack frame at 0x644ed0:
+ rip = 0x4140b9 in intrusive_collections::rbtree::NodePtr::left (/home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:178); saved rip = 0x4141a2
+ called by frame at 0x644f00
+ source language rust.
+ Arglist at 0x644ea8, args: self=...
+ Locals at 0x644ea8, Previous frame's sp is 0x644ed0
+ Saved registers:
+  rip at 0x644ec8
+>>> info frame 1
+Stack frame at 0x644f00:
+ rip = 0x4141a2 in intrusive_collections::rbtree::NodePtr::is_left_child (/home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:198); saved rip = 0x4148eb
+ called by frame at 0x645020, caller of frame at 0x644ed0
+ source language rust.
+ Arglist at 0x644ec8, args: self=...
+ Locals at 0x644ec8, Previous frame's sp is 0x644f00
+ Saved registers:
+  rip at 0x644ef8
+>>> info frame 2
+Stack frame at 0x645020:
+ rip = 0x4148eb in intrusive_collections::rbtree::NodePtr::post_insert (/home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:339); saved rip = 0x411544
+ called by frame at 0x645070, caller of frame at 0x644f00
+ source language rust.
+ Arglist at 0x644ef8, args: self=..., root=0x645978
+ Locals at 0x644ef8, Previous frame's sp is 0x645020
+ Saved registers:
+  rip at 0x645018
+>>> info frame 3
+Stack frame at 0x645070:
+ rip = 0x411544 in intrusive_collections::rbtree::NodePtr::insert_right (/home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:296); saved rip = 0x412c0c
+ called by frame at 0x645120, caller of frame at 0x645020
+ source language rust.
+ Arglist at 0x645018, args: self=..., new=..., root=0x645978
+ Locals at 0x645018, Previous frame's sp is 0x645070
+ Saved registers:
+  rip at 0x645068
+>>> info frame 4
+Stack frame at 0x645120:
+ rip = 0x412c0c in intrusive_collections::rbtree::RBTree<A>::insert (/home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:1253); saved rip = 0x40c738
+ called by frame at 0x645590, caller of frame at 0x645070
+ source language rust.
+ Arglist at 0x645068, args: self=0x645978, val=...
+ Locals at 0x645068, Previous frame's sp is 0x645120
+ Saved registers:
+  rip at 0x645118
+>>> info frame 5
+Stack frame at 0x645590:
+ rip = 0x40c738 in <sel4_alloc::vspace::hier::Hier as sel4_alloc::VSpaceManager>::reserve_at_vaddr (/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/sel4-alloc/src/vspace/hier.rs:1069); saved rip = 0x406928
+ called by frame at 0x645d00, caller of frame at 0x645120
+ source language rust.
+ Arglist at 0x645118, args: self=0x645960, vaddr=4194304, bytes=19226624
+ Locals at 0x645118, Previous frame's sp is 0x645590
+ Saved registers:
+  rip at 0x645588
+>>> info frame 6
+Stack frame at 0x645d00:
+ rip = 0x406928 in sel4_alloc::bootstrap::bootstrap_allocators (/home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/sel4-alloc/src/bootstrap.rs:146); saved rip = 0x4045b7
+ called by frame at 0x645e60, caller of frame at 0x645590
+ source language rust.
+ Arglist at 0x645588, args: bi=0x1657000, user_start_vaddr=4194304, user_end_vaddr=23417392
+ Locals at 0x645588, Previous frame's sp is 0x645d00
+ Saved registers:
+  rip at 0x645cf8
+>>> info frame 7
+Stack frame at 0x645e60:
+ rip = 0x4045b7 in uxrt_process_server::alloc::MainAlloc::new (src/alloc.rs:160); saved rip = 0x4031eb
+ called by frame at 0x645f70, caller of frame at 0x645d00
+ source language rust.
+ Arglist at 0x645cf8, args: bootinfo=0x1657000, user_start_addr=4194304, user_end_addr=23417392
+ Locals at 0x645cf8, Previous frame's sp is 0x645e60
+ Saved registers:
+  rip at 0x645e58
+>>> info frame 8
+Stack frame at 0x645f70:
+ rip = 0x4031eb in uxrt_process_server::main (src/lib.rs:215); saved rip = 0x400535
+ called by frame at 0x645f80, caller of frame at 0x645e60
+ source language rust.
+ Arglist at 0x645e58, args: bootinfo=0x1657000
+ Locals at 0x645e58, Previous frame's sp is 0x645f70
+ Saved registers:
+  rip at 0x645f68
+>>> info frame 9
+Stack frame at 0x645f80:
+ rip = 0x400535 in root_task::main (src/bin/root-task.rs:216); saved rip = 0x400625
+ caller of frame at 0x645f70
+ source language rust.
+ Arglist at 0x645f68, args: 
+ Locals at 0x645f68, Previous frame's sp is 0x645f80
+ Saved registers:
+  rip at 0x645f78
+>>> info frame 10
+Stack frame at 0xa:
+ rip = 0x0; saved rip = 0x100
+ called by frame at 0x644ec0
+ Arglist at 0x644ea8, args: 
+ Locals at 0x644ea8, Previous frame's sp is 0x644eb8
+ Saved registers:
+  rip at 0x644eb0
+
+
+
+
+
+rbtree.rs: 178 mulfunctioning.
+
+ p &self
+$9 = (intrusive_collections::rbtree::NodePtr *) 0x644ec0
+>>> 
+ unsafe fn left(self) -> NodePtr {
+178         (*self.0).left.get()
+179     }
+
+************************************************************
+#0  core::cell::Cell<T>::get (self=0x100) at /home/aditya/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/libcore/cell.rs:249
+#1  0x00000000004140c3 in intrusive_collections::rbtree::NodePtr::left (self=...) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:178
+#2  0x00000000004141a2 in intrusive_collections::rbtree::NodePtr::is_left_child (self=...) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:198
+#3  0x00000000004148eb in intrusive_collections::rbtree::NodePtr::post_insert (self=..., root=0x645978) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:339
+#4  0x0000000000411544 in intrusive_collections::rbtree::NodePtr::insert_right (self=..., new=..., root=0x645978) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:296
+#5  0x0000000000412c0c in intrusive_collections::rbtree::RBTree<A>::insert (self=0x645978, val=...) at /home/aditya/.cargo/registry/src/github.com-1ecc6299db9ec823/intrusive-collections-0.7.8/src/rbtree.rs:1253
+#6  0x000000000040c738 in <sel4_alloc::vspace::hier::Hier as sel4_alloc::VSpaceManager>::reserve_at_vaddr (self=0x645960, vaddr=4194304, bytes=19226624) at /home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/sel4-alloc/src/vspace/hier.rs:1069
+#7  0x0000000000406928 in sel4_alloc::bootstrap::bootstrap_allocators (bi=0x1657000, user_start_vaddr=4194304, user_end_vaddr=23417392) at /home/aditya/uxrt-toplevel/packages/core-supervisor/fel4/sel4-alloc/src/bootstrap.rs:146
+#8  0x00000000004045b7 in uxrt_process_server::alloc::MainAlloc::new (bootinfo=0x1657000, user_start_addr=4194304, user_end_addr=23417392) at src/alloc.rs:160
+#9  0x00000000004031eb in uxrt_process_server::main (bootinfo=0x1657000) at src/lib.rs:215
+#10 0x0000000000400535 in root_task::main () at src/bin/root-task.rs:216
+>>> 
+info frame 0
+Stack frame at 0x644eb0:
+ rip = 0x413ce9 in core::cell::Cell<T>::get (/home/aditya/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/libcore/cell.rs:249); saved rip = 0x4140c3
+ called by frame at 0x644ed0
+ source language rust.
+ Arglist at 0x644e88, args: self=0x100
+ Locals at 0x644e88, Previous frame's sp is 0x644eb0
+ Saved registers:
+  rip at 0x644ea8
+
+
